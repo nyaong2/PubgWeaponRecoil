@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Principal;
@@ -659,6 +660,37 @@ class Util
                 SW.WriteLine(Time.GetCurrentTimeStr() + ": " + msg);
                 SW.Close();
             }
+        }
+    }
+    #endregion
+
+    #region Download
+    public class Http
+    {
+        public static string GetTxt(in string Url)
+        {
+            string readTxt = null;
+            try
+            {
+                WebClient client = new WebClient();
+                Stream stream = client.OpenRead(Url);
+                StreamReader reader = new StreamReader(stream);
+                readTxt = reader.ReadToEnd();
+                stream.Close();
+                reader.Close();
+            }
+            catch { return "Unknown"; }
+
+            return readTxt;
+        }
+        public static void Visitor(in string Url)
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                client.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36");
+                Stream stream = client.OpenRead(Url);
+            } catch { };
         }
     }
     #endregion

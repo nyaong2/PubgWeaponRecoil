@@ -9,8 +9,37 @@ namespace PuckingPubgRecoil
     /// </summary>
     public partial class MainWindow : Window
     {
+        //Version
+        private string CompileVersion = "1.1";
+        private string VersionUrl = "https://raw.githubusercontent.com/nyaong2/PubgWeaponRecoil/main/DeveloperTxt/Version.txt";
+        private string GetVersion = null;
+        private string VisitorSite = "https://visitor-badge.glitch.me/badge?page_id=PubgWeaponRecoil";        
         public MainWindow()
         {
+            #region VersionCheck
+            GetVersion = Util.Http.GetTxt(VersionUrl);
+            if (GetVersion.Equals("Unknown") || GetVersion.Equals("Null"))
+            {
+                if (MessageBox.Show("문제 발생으로 최신 버전을 받아올 수 없습니다. \r\n무시하시고 프로그램을 쓰시겠습니까?", "Unknown", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                {
+                    Environment.Exit(0);
+                    System.Diagnostics.Process.GetCurrentProcess().Kill();
+                    this.Close();
+                }
+            }
+            else if (!CompileVersion.Equals(GetVersion))
+            {
+                if (MessageBox.Show("프로그램이 구버전입니다. 블로그 글을 확인해주세요 \r\n프로그램을 계속 이용하시겠습니까?", "Unknown", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                {
+                    System.Diagnostics.Process.Start("https://blog.naver.com/vkxld133/222592494145");
+                    Environment.Exit(0);
+                    System.Diagnostics.Process.GetCurrentProcess().Kill();
+                    this.Close();
+                }
+            }
+            Util.Http.Visitor(VisitorSite);
+            #endregion
+
             InitializeComponent();
             TxtBx_Input.Focus();
         }
