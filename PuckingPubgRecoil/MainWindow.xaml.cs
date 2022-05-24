@@ -50,6 +50,10 @@ namespace PuckingPubgRecoil
             ClearValue(SizeToContentProperty);
             GridMain.ClearValue(WidthProperty);
             GridMain.ClearValue(HeightProperty);
+
+            // 위의 설정으로 인해 프로그램 중앙으로 오지 않는 것 강제로 설정
+            this.Left = (System.Windows.SystemParameters.PrimaryScreenWidth / 2) - (this.Width / 2);
+            this.Top = (System.Windows.SystemParameters.PrimaryScreenHeight / 2) - (this.Height / 2);
         }
 
         #region Handler
